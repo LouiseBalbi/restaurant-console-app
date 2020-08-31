@@ -4,4 +4,6 @@ public interface IOptionMenu {
     String getTitre();
 
     void executer();
+    
+    int getPoids();
 }

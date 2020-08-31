@@ -5,6 +5,9 @@ import dev.service.IPlatService;
 
 import java.util.Scanner;
 
+import org.springframework.stereotype.Controller;
+
+@Controller
 public class OptionAjouterPlat implements IOptionMenu {
     private Scanner scanner;
 
@@ -43,4 +46,9 @@ public class OptionAjouterPlat implements IOptionMenu {
         }
 
     }
+
+	@Override
+	public int getPoids() {
+		return 100;
+	}
 }
