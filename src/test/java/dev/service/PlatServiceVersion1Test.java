@@ -1,6 +1,7 @@
 package dev.service;
 
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 import org.assertj.core.api.Assertions;
@@ -35,7 +36,7 @@ public class PlatServiceVersion1Test {
     
     
     @Test
-    public void ajouterPlatPrixInvalide() {
+    public void ajouterPlatPrixInvalide() throws PlatException {
     	
     	assertThrows(PlatException.class,()-> platServiceVersion1.ajouterPlat("PlatTest", 2));
 
@@ -45,6 +46,6 @@ public class PlatServiceVersion1Test {
     @Test
     public void ajouterPlat() {
     	platServiceVersion1.ajouterPlat("PlatTest", 1234);
-    	verify(dao, atLeastOnce()).ajouterPlat(anyString(), anyInt());
+    	verify(dao).ajouterPlat(anyString(), anyInt());
     }
 }
