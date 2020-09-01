@@ -1,10 +1,8 @@
 package dev.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.verify;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,14 +32,22 @@ public class PlatServiceVersion2IntegrationTest {
 	public void ajouterPlatValide() {
 
 		platServiceVersion2.ajouterPlat("PlatTest", 1234);
-		List<Plat> listePlat = new ArrayList<>();
-		assertThat(listePlat).isEmpty();
+		List<Plat> listePlat = platServiceVersion2.listerPlats();
+		assertThat(listePlat.size()).isEqualTo(1);
+		assertThat(listePlat).extracting(Plat::getNom).contains("PlatTest");
+		assertThat(listePlat).extracting(Plat::getPrixEnCentimesEuros).contains(1234);
+
+
 	}
 
 	@Test
 	public void ajouterPlatNomInvalide() throws PlatException {
 
-		assertThrows(PlatException.class, () -> platServiceVersion2.ajouterPlat("la", 1234));
+		//assertThrows(PlatException.class, () -> platServiceVersion2.ajouterPlat("PlatTest", 2));
+		
+		assertThatThrownBy( () -> platServiceVersion2.ajouterPlat("PlatTest", 2))
+		.isInstanceOf(PlatException.class)
+		.hasMessage("le prix d'un plat doit être supérieur à 10 €");
 	}
 
 }
