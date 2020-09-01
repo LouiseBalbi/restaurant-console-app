@@ -12,7 +12,7 @@ import org.springframework.context.annotation.PropertySource;
 
 @Configuration
 @ComponentScan("dev")
-@PropertySource("app.properties")
+//@PropertySource("app.properties")
 public class Appconfig {
 	
 	

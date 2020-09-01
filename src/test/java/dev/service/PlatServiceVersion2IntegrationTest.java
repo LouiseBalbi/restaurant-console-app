@@ -26,7 +26,6 @@ public class PlatServiceVersion2IntegrationTest {
 
 	@Autowired
 	private PlatServiceVersion2 platServiceVersion2;
-	private IPlatDao dao;
 
 	@Test
 	public void ajouterPlatValide() {
@@ -36,7 +35,6 @@ public class PlatServiceVersion2IntegrationTest {
 		assertThat(listePlat.size()).isEqualTo(1);
 		assertThat(listePlat).extracting(Plat::getNom).contains("PlatTest");
 		assertThat(listePlat).extracting(Plat::getPrixEnCentimesEuros).contains(1234);
-
 
 	}
 
