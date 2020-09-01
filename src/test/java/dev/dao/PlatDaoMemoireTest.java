@@ -31,13 +31,22 @@ public class PlatDaoMemoireTest {
 
 	@Test
 	  void ajouterPlatCasPassants() {
+		
+		List<Plat> resultatAvant = platDaoMemoire.listerPlats();
+		assertThat(resultatAvant.size()).isEqualTo(0);
 		 
 		  Plat platTest = new Plat("PlatTest", 1100);
-	  
 		  platDaoMemoire.ajouterPlat("PlatTest", 1100);
 		  
-		  Assertions.assertThat(platTest.getNom()).isEqualTo("PlatTest");
-		  Assertions.assertThat(platTest.getPrixEnCentimesEuros()).isEqualTo(1100);
+		  List<Plat> resultatApres = platDaoMemoire.listerPlats();
+		  assertThat(resultatApres.size()).isEqualTo(1);
+		  assertThat(resultatApres).extracting(Plat::getNom).containsAnyOf("PlatTest");
+		  assertThat(resultatApres).extracting(Plat::getPrixEnCentimesEuros).containsAnyOf(1100);
+		  
+		  
+//		  Assertions.assertThat(platTest.getNom()).isEqualTo("PlatTest");
+//		  Assertions.assertThat(platTest.getPrixEnCentimesEuros()).isEqualTo(1100);
+
 		  
 	  }
 
