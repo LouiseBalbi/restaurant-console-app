@@ -30,8 +30,7 @@ public class PlatDaoJdbcIntegrationTest {
 	
 	@Test
 	void listerPlatsNonVide() {
-		
-		
+	
 		List<Plat> plats = platDaoJdbc.listerPlats();
 		assertThat(plats).isNotEmpty();
 		

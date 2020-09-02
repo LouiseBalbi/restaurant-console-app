@@ -6,6 +6,7 @@ import javax.sql.DataSource;
 
 import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import dev.entite.Plat;
@@ -15,6 +16,16 @@ import dev.entite.Plat;
 public class PlatDaoJdbc implements IPlatDao {
 	
 	private JdbcTemplate jdbcTemplate;
+	
+//	public PlatDaoJdbc(DataSource dataSource) {
+//		this.jdbcTemplate = new JdbcTemplate(dataSource);
+//	}
+	private RowMapper<Plat> platRowMapper = (resultSet, i) -> {
+		Plat plat = new Plat();
+		plat.setPrixEnCentimesEuros(resultSet.getInt("prix"));
+		plat.setNom(resultSet.getString("nom"));
+		return plat;
+	};
 	
 	public PlatDaoJdbc(DataSource dataSource) {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
@@ -27,7 +38,7 @@ public class PlatDaoJdbc implements IPlatDao {
 
 	@Override
 	public void ajouterPlat(String nomPlat, Integer prixPlat) {
-		this.jdbcTemplate.update("insert into plat(nom, prixEnCentimesEuros) values(?, ?)", nomPlat, prixPlat);
+		this.jdbcTemplate.update("insert into plat(nom, prix) values(?, ?)", nomPlat, prixPlat);
 	}
 
 }
