@@ -21,8 +21,8 @@ import org.springframework.stereotype.Repository;
 import static java.util.stream.Collectors.toList;
 
 //@Primary
-//@Repository
-//@Profile("fichier")
+@Repository
+@Profile("fichier")
 //@PropertySource("app.properties")
 public class PlatDaoFichier implements IPlatDao {
 

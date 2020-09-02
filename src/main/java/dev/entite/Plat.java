@@ -6,15 +6,32 @@ public class Plat {
 
     private String nom;
     private Integer prixEnCentimesEuros;
+    private int id;
+    
 
-    public Plat() {
+
+
+	public Plat() {
     }
 
     public Plat(String nom, Integer prixEnCentimesEuros) {
         this.nom = nom;
         this.prixEnCentimesEuros = prixEnCentimesEuros;
     }
+    
+    /**
+	 * @return the id
+	 */
+	public int getId() {
+		return id;
+	}
 
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(int id) {
+		this.id = id;
+	}
     public String getNom() {
         return nom;
     }
