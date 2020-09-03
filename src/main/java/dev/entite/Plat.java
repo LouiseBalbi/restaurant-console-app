@@ -12,6 +12,7 @@ import javax.persistence.Id;
 public class Plat {
 
     private String nom;
+    @Column(name="prix")
     private Integer prixEnCentimesEuros;
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
