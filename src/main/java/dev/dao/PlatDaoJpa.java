@@ -19,7 +19,7 @@ public class PlatDaoJpa implements IPlatDao {
 	@PersistenceContext private EntityManager em;
 	
 	@Override
-	@Transactional
+	//@Transactional
 	public List<Plat> listerPlats() {
 		return em.createQuery("select p from Plat p", Plat.class).getResultList();
 	}
