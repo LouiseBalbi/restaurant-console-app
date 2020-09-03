@@ -4,6 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 
+import javax.management.RuntimeErrorException;
+
+import org.assertj.core.data.Index;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import dev.config.JdbcTestConfig;
 import dev.config.JpaConfig;
-import dev.dao.PlatDaoJpa;
+import dev.entite.Ingredient;
 import dev.entite.Plat;
 import dev.repository.PlatRepository;
 
@@ -50,10 +53,10 @@ public class PlatRepositoryIntegrationTest {
 	
 	@Test
 	public void testFindAllPageable(){
-		Pageable p = PageRequest.of(0, 2);
+		Pageable p = PageRequest.of(0, 2, Sort.Direction.ASC, "nom");
 		Page<Plat> pagePlat = platRepository.findAll(p);
-		assertThat(pagePlat.getContent().get(0).getNom()).isEqualTo("Blanquette de veau");
-		assertThat(pagePlat.getContent().get(1).getNom()).isEqualTo("Couscous");
+		assertThat(pagePlat.getSize()).isEqualTo(2);
+		assertThat(pagePlat.getContent().get(0).getId()).isEqualTo(4);
 	}
 	
 	@Test
@@ -76,6 +79,60 @@ public class PlatRepositoryIntegrationTest {
 	@Test
 	public void testFindByPrix() {
 		assertThat(platRepository.findByPrixEnCentimesEuros(1100)).extracting(Plat::getNom).contains("Côte de boeuf");
+	}
+	
+	@Test
+	public void testAvgPrix() {
+		Double moyenne = platRepository.AvgPrix(0);
+		Double sommeAvecFindAll = 0.0;
+		
+		List<Plat> listePlat = platRepository.findAll();
+		for (Plat plat : listePlat) {
+			sommeAvecFindAll += plat.getPrixEnCentimesEuros();
+		}
+		
+		double moyenneJava8 = listePlat.stream().mapToInt(Plat::getPrixEnCentimesEuros).average().orElse(0);
+		
+		assertThat(moyenne).isEqualTo(sommeAvecFindAll/listePlat.size());
+		assertThat(moyenne).isEqualTo(moyenneJava8);
+	}
+	
+
+
+	
+//	@Test
+//	public void testFindByNomWithIngredients() {
+//		Plat plat = platRepository.findByNomWithIngredients("Moules-frites").orElseThrow(() ->new RuntimeErrorException("'Moule-frites' existe"));
+//		assertThat(plat.getIngredients()).extracting(Ingredient::getNom).contains("sel");
+//	}
+	
+	@Test
+	public void testSave() {
+		long countBefore = platRepository.count();
+
+		Plat plat = new Plat();
+		plat.setNom("Pizza");
+		plat.setPrixEnCentimesEuros(1400);
+
+		platRepository.save(plat);
+
+		long countAfter = platRepository.count();
+		assertThat(countAfter).isEqualTo(countBefore + 1);
+
+		assertThat(platRepository.findAll()).extracting(Plat::getNom).contains(plat.getNom());
+
+	}
+	
+	@Test
+	public void testChangerNom() {
+		platRepository.updateNomPlat("Couscous", "Couscous-Merguez");
+
+		List<Plat> listPlat = platRepository.findAll();
+
+		assertThat(listPlat).extracting(Plat::getNom).contains("Couscous-Merguez", Index.atIndex(2));
+
+
+		
 	}
 
 }
