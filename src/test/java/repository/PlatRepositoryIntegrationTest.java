@@ -100,11 +100,11 @@ public class PlatRepositoryIntegrationTest {
 
 
 	
-//	@Test
-//	public void testFindByNomWithIngredients() {
-//		Plat plat = platRepository.findByNomWithIngredients("Moules-frites").orElseThrow(() ->new RuntimeErrorException("'Moule-frites' existe"));
-//		assertThat(plat.getIngredients()).extracting(Ingredient::getNom).contains("sel");
-//	}
+	@Test
+	public void testFindByNomWithIngredients() {
+		Plat plat = platRepository.findByNomWithIngredients("Moules-frites").orElseThrow(() -> new RuntimeException("'Moule-frites' existe"));
+		assertThat(plat.getIngredients()).extracting(Ingredient::getNom).contains("Moule");
+	}
 	
 	@Test
 	public void testSave() {
@@ -123,6 +123,7 @@ public class PlatRepositoryIntegrationTest {
 
 	}
 	
+	@Transactional
 	@Test
 	public void testChangerNom() {
 		platRepository.updateNomPlat("Couscous", "Couscous-Merguez");
